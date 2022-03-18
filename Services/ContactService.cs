@@ -27,6 +27,26 @@ namespace ContactAppBackend.Services
             return result;
         }
 
+        public ActionResult<APIResult> DeleteContact(int id)
+        {
+            var result = new APIResult();
+            Contact? contact = appContext.Contacts.Find(id);
+            if (contact == null)
+            {
+                result.Description = "Girilen id ile contact yok";
+                result.Success = false;
+                return result;
+            }
+            
+            // contacts/2 DELETE
+            appContext.Contacts.Remove(contact);
+            appContext.SaveChanges();
+            result.Success = true;
+            result.Description = "Silindi";
+
+            return result;
+        }
+
 
         public ActionResult<IEnumerable<ContactDto>> GetContact()
         {
@@ -37,6 +57,7 @@ namespace ContactAppBackend.Services
                 var user = appContext.Users.Find(contact.OwnerId);
                 result.Add(new ContactDto()
                 {
+                    Id = contact.Id,
                     PhoneNumber = contact.PhoneNumber,
                     Adress = contact.Adress,
                     Title = contact.Title,
@@ -67,6 +88,7 @@ namespace ContactAppBackend.Services
                 var user = appContext.Users.Find(item.OwnerId);
                 var dto = new ContactDto()
                 {
+                    Id =item.Id,
                     Title = item.Title,
                     PhoneNumber = item.PhoneNumber,
                     Adress = item.Adress,

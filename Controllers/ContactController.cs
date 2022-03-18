@@ -43,16 +43,19 @@ namespace ContactAppBackend.Controllers
             return this.contactService.CrateContact(dto);
         }
 
+
         // PUT api/<ContactController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
+   
 
         // DELETE api/<ContactController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult<APIResult> Delete(int id)
         {
+            return contactService.DeleteContact(id);
         }
     }
 }
